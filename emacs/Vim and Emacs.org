@@ -1,0 +1,52 @@
+* VIM 和 EMACS
+  希望这篇文章挑起圣战的人歇歇吧，这篇文章主要是讲 VIM 在 EMACS 上的融合，所以说到底 EMACS 是一个操作系统，VIM 把缺乏好的编辑器的这一环补上了。
+  因为对 lisp 这门语言的热衷，我个人最先接触 EMACS，对 emacs 的操作已经非常熟悉。后来准备做自己配置的时候，到 github 查看各种大牛的配置，发现许多人推荐用 evil-mode，在 emacs 上面模拟 vim 的一个 major mode。
+  然后抱着人生不息折腾不止的精神，初步入门了 vim，这篇文章算是对 vim 使用的一个小结。
+** VIM 杂谈
++ vim 拥有各种模式
+  | 模式         | 描述                                                                  |
+  |--------------+-----------------------------------------------------------------------|
+  | insert mode  | 即编辑模式，可以在这里输入内容                                        |
+  | normal mode  | 命令模式，在编辑模式下按 esc 键进入，可以进行文本跳转、删除、修改等等 |
+  | visual mode  | 选择模式，v，V，C-v 进入（在命令模式下）                              |
+  | replacs mode | R 进入（在命令模式下）                                                |
+  怎么说呢，当初在学习 linux 的时候也试图学习 vim，感觉 vim 操作太反直觉，需要思考你位于哪个模式下思考快捷命令组合，可能这种感觉是因为用惯了 windows 产生的吧。
+  VIM 命令非常娴熟运用是怎样的我没看见过，但是很多大牛推荐应该是不差的，就个人而言，如果纯粹的移动一个单词距离要切换模式的话真的很难想象。使用了一个 evil 大概几个星期，感觉用来浏览代码十分高效，毕竟平常浏览代码的时间大于编写的时间。
++ vim 的常用操作组合
+  首先了解常用的操作
+  #+BEGIN_QUOTE
+  h，j，k，l 为左下上右的光标移动
+  #+END_QUOTE
+  当然移动的还有$,^,0 和 f,t,e,w,G 加上数字前缀 N 则可以重复移动操作 N 次。
+  #+BEGIN_QUOTE
+  d，y，c，v 分别代表删除、拷贝、修改、选择
+  #+END_QUOTE
+<<<<<<< 19cfae328081739bbaa471344b64e35db9dd6680
+  可以进行双重输入则变成对行操作，比如 =dd= 则是删除整行，当然也可以加入数字前缀 =3dd= 代表删除三行，此外更强大的是可以在前缀加入范围 =1,3d= 删除 1 至 3 行。
+  另外<start position><command><end position>可以对文本指定起点和终点，然后进行操作。像 d，y，c 后面皆可以加入{motion}，比如 =dfS= 表示从光标处删除至下一个 S 字符之间的字符。
+  vim 把文本看成是一种容器，可以更灵活的进行 =切片式= 的操作，在指令前面加入数字前缀表示重复命令次数不错，虽然 emacs 也有 =M-<NUM> + <COMMAND>= 感觉还是别扭了点。刚开始接触 vim 时，它的一行间跳转和行间跳转让我很羡慕，但是自从有了 ace-jump 插件之后，感觉 vim 跳转方式很鸡肋，试问谁会数你要跳转的位置然后得出一个数字，人们更愿意不断的重复按某个键...更有成就感。
++ vim 比较好的优化
+  + . → (小数点) 可以重复上一次的命令，N<command> → 重复某个命令 N 次。
+  + % : 匹配括号移动，包括 (, {, [.
+  + * 和 #: 匹配光标当前所在的单词，移动光标到下一个（或上一个）匹配单词（*是下一个，#是上一个）。
+  + ma 表示设置一个 mark 叫做 a，用`a 表示回到 mark a 处，同理有 mb，使用`b 回到 mark b 处，`.则表示回到上次编辑文件的地方。
+  都可以用 elisp 写相关替代命令。
+** emacs
++ emacs 下的 terminal
+  可以使用 emacs 的守护进程模式 =emacs -daemon= ，相当于启动了一个 sever，然后用客户端形式启动， =emacsclient -t= 对应 terminal 版本的 emacs， =emacsclient -c= 对应的是图形版（x frame）版本的 emacs。
+** spacemacs
+spacemacs 是新兴的比较火的项目，结合 evil-mode 和 emace。
+spacemacs 主要有以下三个特点：
++ 大量使用 use-package，优化为人诟病的加载速度，整合了常见的加载模式，可以延迟加载或空闲加载（2.0 版本)
++ 在 package 之上又抽象出一个 layer 的概念，也是得益于 use-package，可以更清晰管理 package，比如 packages 增减统一管理，各个 package 的初始化和相互依赖的处理（使用 post-init-package 和 pre-init-packega 注射依赖），工程结构很完美
++ evil-mode 和 evil-leader，后者绑定到 space 键上面，加上 guide-key（后来改成了 which-key）等提示，算是比较快的进行命令输入，但个人大部分时间还是习惯于直接输入命令名本身，偶尔用快捷键
++ 如果算的上四个特点就是大量依赖 helm 包，几乎将所有的容器都使用所谓 fussy match 的功能，包括 files，buffers，projects，documents，packages，complete 甚至是 ring 等等
+后来发现 spacemacs 还有个 holy-mode，evil-mode 的 insert 状态恢复为 emacs 的正常模式，很不错，正在用。
+*** spacemacs-tips
+spacemacs 本身整合了许多的功能，有些在文档中也未必能描述详尽，所以把一些实用但是平常不怎么注意到的功能记录于此
++ 在 evil－normal－state 下的 g 键定义了许多功能，相当 g（oto），比如说 gf 可以快速的跳转当前光标下的路径地址
++ 使用 =×= 和 =#= ，在 vim 中可以直接高亮选择，同样的 spacemacs 使用了 highlight-symbol 这个 packege，在高亮后还可以有后续的操作（搜索，批量编辑等等），非常实用
++ spc？ 可以用来搜索相关命令的按键绑定
++ 如果是在一个 git 项目下，添加行或者删减行的时候，在末尾有绿色或者红色提示，可以选择关闭
++ indent-guide 缩进提醒，挺不错的一个 package
++ 在.spacemacs 下有设置 major-mode 的 leadkey，不用每次在编辑状态下需要 Esc->Spc->m 了，相当完成三步操作，之前不知道，在某个 mode 下不断切换状态用得非常辛苦

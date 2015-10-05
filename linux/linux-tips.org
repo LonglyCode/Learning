@@ -1,0 +1,83 @@
+* linux 使用过程的细枝末节
+** linux常用操作命令相关
++ file time概念
+  + atime：文件的access time，为读取文件或者执行文件时更改
+  + mtime：modified time，修改时间（写入)更改
+  + ctime：create time，iNode上更改所有者、权限或者链接设置时的时间，mtime更改ctime也会更改，反之未必
++ 数据重定向
+  | 设备   | 设备文件名  | 文件描述 | 类型     |
+  |--------+-------------+----------+----------|
+  | 键盘   | /dev/stdin  |        0 | 标准输入 |
+  | 显示器 | /dev/stdout |        1 | 标准输出 |
+  | 显示器 | /dev/stderr |        2 | 标准错误输出 |
+  #+BEGIN_EXAMPLE
+  ls &>/dev/null，将输出的信息忽略
+  #+END_EXAMPLE
+  | 命令                 | 描述                                  |
+  |----------------------+---------------------------------------|
+  | 命令 &>文件          | 覆盖，正确和错误都输出到同一个文件内  |
+  | 命令 &>>文件         | 追加， 正确和错误都输出到同一个文件内 |
+  | 命令>>文件1 2>>文件2 | 正确追加文件1，错误追加到文件2        |
++ apt-get一些说明
+  | 命令         | 描述                                   |
+  |--------------+----------------------------------------|
+  | install      | 加上软件包名，用于安装                 |
+  | update       | 更新本地软件源的软件包列表             |
+  | upgrade      | 升级本地可更新的全部软件包             |
+  | dist-upgrade | 解决依赖关系并升级                     |
+  | remove       | 移除，相关依赖也移除，配置文件保留     |
+  | autoremove   | 移除之前被其他软件依赖，现在不再使用了 |
+  | purge        | 和remove相同，其配置文件一同被移除     |
+
++ 使用dpkg从本地磁盘安装deb软件包
+  | 参数 | 描述                         |
+  |------+------------------------------|
+  | -i   | 指定安装包                   |
+  | -R   | +目录，该目录下所有deb都安装 |
+  | -r   | remove                       |
+  | -I   | 显示deb包文件的信息          |
+  | -s   | 显示已安装软件的信息         |
+  | -S   | 搜索已安装的软件包           |
+  | -L   | 显示已安装软件包的目录信息   |
++ inode
+  #+BEGIN_EXAMPLE
+  ls -li 其中i用于显示列出项的inode，对于查看链接的文件或者目录有用
+  #+END_EXAMPLE
++ history
+  history命令之前很少用，只是用arrow up or down来查找最近命令
+  + =history | grep string= 加入管道和grep查找历史命令
+  + =!!string= 以string开头的历史命令
+  + =!?string= 包好string的历史命令
++ chmod更改权限相关
+  #+BEGIN_EXAMPLE
+  chmod rw-rw-rw- XX.txt 这个输入的参数
+  chmod 110110110 XX.txt 考虑到用1使能，0禁止，依旧不支持
+  chmod 666 XX.txt 转变成八进制，可以，为什么是八进制呢...因为最大只能111...也就7
+  #+END_EXAMPLE
++ 进程相关
+  #+BEGIN_EXAMPLE
+  一般用法： ps aux
+  添加管道： ps aux|grep vim
+  杀死进程： kill PID(kill -9 PID强行杀死）
+            killall program_name
+  #+END_EXAMPLE
++ 跳转
+  后来才知道原来shell支持emacs式的移动，跳转单词什么的
+  尤其 =ctrl+r= 可以用来向上搜索命令历史
+** 新安装后要做的
++ 更改软件源（改为163），update
+  #+BEGIN_EXAMPLE
+  sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup可以先备份
+  sudo apt-get update
+  #+END_EXAMPLE
++ 安装tweak-tool，可以简单制定桌面
++ 安装字体或者更新驱动
++ 安装输入法/chrome/emacs/flash/git/java环境（太多软件依赖）
++ wiz笔记，xmind思维导图
++ 设置vpn同步书签和clone github上的东西
++ 或者折腾一个主题
++ 有用的软件列表:
+  Synapse, 快速启动器
+  f.lux，屏幕调节
+  Synaptic新立得软件包
+  

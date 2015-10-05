@@ -1,0 +1,83 @@
+* python 总集录
+** 零碎篇
+   + range 函数，range（0,10,3）>>>[0,  3,  6,  9]
+   + else 可以在 for 循环完成进入
+   + 链表推导式
+   + 循环技巧
+     + 在字典中循环时，关键字和对应的值可以使用 =items()= 方法同时解读出来
+     + 在序列中循环时，索引位置和对应值可以使用 =enumerate()= 函数同时得到
+     + 同时循环两个或更多的序列，可以使用 =zip()=  整体解读
+   + Python 的一个特别之处在于其赋值操作总是在最里层的作用域。赋值不会复制数据——只是将命名绑定到对象。删除也是如此：“del  x ”只是从局部作用域的命名空间中删除命名 x
+   + slot 方法,它们将创建一个不具备 .__dict__ 属性的类，其中的属性都经过显式命名（然而，在类主体内仍按常规声明方法）。这有一点特别，但是这种方法可以确保在访问属性时调用方法代码
+   + 在 Python 2.2 及之后版本中，您可以选择使用 .__getattribute__() 方法，代替具有类似名称且易被混淆的老式.__getattr__() 方法
+   + m = dict(zip(names,ages)) 用来联合两个序列变成字典，主要是 zip（）的用法
+   + 因为字符串在内存里面不可变，所以如果用+号连接两个字符串时，将会进行各种内存调度工作，所以连接多个字符串先将其放进序列里面，然后用''.join(seq)的方法，其中 seq 代表字符串序列
+   + 判断一个 key 是否在一个 dict 里面，用 has_key(key,default=none),其中第二参数可以自己定义当为空时的返回值
+   + 去掉 list 中的重复元素：用 set，然后再用 list（）变回去掉重复的 list，因为 set（集合）里面不允许出现重复
+   + with open(filename, 'r') as f: f.read(),with 语句和 vba 用点像，将事务包含一定的代码块里面，封装 in（open）和 out（close）以及 exception 行为，最有趣的是可以自定义这样的 with 代码块
+   + return_value = True if a == 1 else False 和 c 里面的 a?b:c 一样
+   + a[::-1]，a 为字符串，相当于 reverse
+   + all([a, b, c])===a and b and c 逻辑简化
+   + os.walk（dir）和 os.path.join(root,file) 其中 os.walk 可以递归遍历，for root, subFolders, files in os.walk(rootdir)
+   + lambda x,y,z: (x-y)*z，lambda 的语法
+   + =sorted(a, key=lambda result: result[1],reverse=True)= ，这个排序居然跟 lisp 很像，基本抄过来的。在 key 里面定义一个匿名函数，在函数里面自定排序规则，因为输入参数默认为 a（sorted 的第一个参数），所以使用匿名函数时可以使用 map 等提取单独元素，完整 sorted(data, cmp=None, key=None, reverse=False)
+   + operator.itemgetter 函数获取的不是值，而是定义了一个函数，通过该函数作用到对象上才能获取值。所以 sorted(aa.items(),key=itemgetter(1)) 是对字典 aa 的 value 值进行排序，使用之前 from operator import itemgetter
+   + ["%s=%s" % (k, v) for k, v in params.items()]
+   + datetime.datetime.now().strftime("%Y-%m-%d %H:%M")>>'2015-06-28 07:37'
+   + 在 Python 2.x 中，闭包只能读外部函数的变量，而不能改写它。Python 3.x 引入了 nonlocal 关键字， 就能将其改写了
+   + 通常认为用 #!/usr/bin/env python 要比 #!/usr/bin/python 更好，因为 python 解释器有时并不安装在默认路径，例如在 virtualenv 中，如果你用 python xxoo.py 来运行，那么写不写都没关系，如果要用 ./xxoo.py 那么就必须加这行，这行被称为 shebang, 用来为脚本语言指定解释器.
+   + 永远不要用==或者!=来比较单件, 比如 None. 使用 is 或者 is not
+<<<<<<< 19cfae328081739bbaa471344b64e35db9dd6680
+   + __del__ 监控对象释放
+   + 用视图来判断两个字典的差异，即 viewitems
+   + 
+** 小结篇 
+=======
+   + 
+** 小结篇 
+*** python 用 ipdb 进行调试
+使用 ipython 运行文件，%run xxx.py，出现异常抛出的时候输入%debug 可以直接进入 ipdb 调试器，或者想在文件某个地方中断，可以在此处插入 import ipdb;ipdb.set_trace()
+下面是 ipdb 有用的调试命令:
+| 命令          | 作用                                                   |
+|---------------+--------------------------------------------------------|
+| l(list)       | 列出当前运行的代码，后面可加数字，直接定位相关行的代码 |
+| w(here)       | 显示当前的具体位置，输出当前行的代码                   |
+| u(p)          | 上一个调用的堆栈                                       |0
+| d(own)        | 下一个调用的堆栈                                       |
+| c(ontinue)    | 运行到下一个断点处                                     |
+| n(ext)        | 执行下一行（不进入新的函数）                           |
+| s(tep)        | 执行下一个语句（到新的函数）                           |
+| until         | 用于循环跳出                                           |
+| p(rint) or pp | 用于打印变量，其中 pp 用来打印段落                     |
+| bt            | 打印调用堆栈                                           |
+| r(eturn)      | 执行到函数返回                                         |
+| a             | 打印局部变量                                           |
+| q(uit)        | 退出调试                                               |
+| !command      | 执行特定的 python 命令，比如临时修改变量等             |
+管理 break（断点）：
+在一些 IDE 上，一个断点可以设置条件，触发动作等等，同样 pdb 也提供了相似的功能，不过要费点心思去了解和记忆。
+#+BEGIN_EXAMPLE
+断点包含以下属性值
+Num 系统自动编号，从一开始，相当于 ID，breakpoint 几乎就是按 ID 来操作的
+Type 默认类型为 breakpoint
+Disp 
+Enb 是否要 disable，拥有 yes、no 两个状态
+Where 断点所在位置
+#+END_EXAMPLE
+| 命令                      | 作用                                                      |
+|---------------------------+-----------------------------------------------------------|
+| break                     | 列出当前运行代码中的断点                                  |
+| break + 数字              | 在代码某一行加入断点                                      |
+| break + 函数名            | 直接在函数上设置断点，具体需要自行实践                    |
+| tbreak + 同上参数         | 临时断点，命中（hit）之后失效                             |
+| disable + ID              | ID 为断点系统自动的编码，使断点失效                       |
+| enable + ID               | 使生效，和 disable 配合使用                               |
+| clear + ID                | 删除断点，值得注意的是其他断点 ID 不变                    |
+| break + ID,expression     | 条件断点，当后面的表达式成立时断点才会命中                |
+| condition + ID expression | 对已有的断点添加条件，只有条件成立时才会命中，注意空格    |
+| ignore + ID n             | 忽略断点的次数（n 次）                                   |
+| commands + ID             | 断点触发动作，会进入某种输入块模式，使用 end 表示输入结束 |
+| jump + 数字               | 直接跳转到相关行，相当于 goto，谨慎使用                   |
+自定义别名 alias，格式为 alias 别名 目标，比如 =alias pl pp locals().key()=,pl 即可打印出当前栈本地变量名
+可以设置一些常用的命令在"~/.pdbrc"里面。
+>>>>>>> 添加了python调试的小结，主要是针对pdb的
