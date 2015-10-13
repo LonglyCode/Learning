@@ -83,4 +83,48 @@ Where 断点所在位置
 4. 对于对象而言，object.__getattribute__()会把 b.x 变成 type(b).__dict__['x'].__get__(b,type(b))。
 5. 因此有以下优先级顺序：资料描述器>实例变量引用>非资料描述器>__getattr__()方法。
 6. 还有一个重要的前提就是，描述器必须位于类当中。
-7. 常见的描述器就是在把字段变成属性的时候，往往加了装饰器的语法糖@property，@property.setter,@property.getter
+7. 常见的描述器就是在把字段变成属性的时候，往往加了装饰器的语法糖@property，@property.setter,@property.deleter
+8. __get__(self,instance,type),__set__(self,instance,value),__delete__(self,instance)
+9. 此外还有 staticmethod(),ClassMethod()等也是用了描述器协议。
+10. 应用场景：属性的类型检查；属性的读写能力，即封装的能力；
+11. 如果不用装饰器的语法糖，定义属性的用以下方式：
+#+BEGIN_SRC python
+  property(fget=None,fset=None,fdel=None,doc=None,)
+#+END_SRC
+具体如下所示
+#+BEGIN_SRC python
+  class Accout(object):
+      def __init__(self):
+          self._acct_num = None
+
+      def get_acct_num(self):
+          return self._acct_num
+
+      def set_acct_num(self, value):
+          self._acct_num = value
+
+      def del_acct_num(self):
+          del self._acct_num
+
+      acct_num = property(get_acct_num, set_acct_num ,del_acct_num, "num")
+#+END_SRC
+显然不易读，加入语法糖变成下面这种形式：
+#+BEGIN_SRC python
+  class Test(object):
+      def __init__(self):
+          self._x = None
+
+      @property
+      # read-only
+      def x(self):
+          return self._x
+
+      @x.setter
+      #writeable
+      def x(self, value):
+          self._x = value
+
+      @x.deleter
+      def x(self):
+          del self._x
+#+END_SRC
