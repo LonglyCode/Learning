@@ -1,6 +1,6 @@
 * VIM 和 EMACS
   这篇文章主要记录 VIM 在 EMACS 上的融合，所以说到底 EMACS 是一个操作系统，VIM 把缺乏好的编辑器的这一环补上了。
-  因为对 lisp 这门语言的热衷，我个人最先接触 EMACS，对 emacs 的操作已经非常熟悉。后来准备做自己配置的时候，到 github 查看各种大牛的配置，发现许多人推荐用 evil-mode，在 emacs 上面模拟 vim 的一个 major mode。
+  因为对 lisp 这门语言的热衷，我个人最先接触 EMACS，对 emacs 的操作已经非常熟悉。后来准备做自己配置的时候，到 github 查看各种大牛的配置，发现许多人推荐用 evil-mode，在 emacs 上面模拟 vim 的一个 mode。
   然后抱着人生不息折腾不止的精神，初步入门了 vim，文章中也会记录 vim 使用。
 ** VIM 杂谈
 + vim 拥有各种模式
@@ -21,7 +21,6 @@
   #+BEGIN_QUOTE
   d，y，c，v 分别代表删除、拷贝、修改、选择
   #+END_QUOTE
-<<<<<<< 19cfae328081739bbaa471344b64e35db9dd6680
   可以进行双重输入则变成对行操作，比如 =dd= 则是删除整行，当然也可以加入数字前缀 =3dd= 代表删除三行，此外更强大的是可以在前缀加入范围 =1,3d= 删除 1 至 3 行。
   另外<start position><command><end position>可以对文本指定起点和终点，然后进行操作。像 d，y，c 后面皆可以加入{motion}，比如 =dfS= 表示从光标处删除至下一个 S 字符之间的字符。
   vim 把文本看成是一种容器，可以更灵活的进行 =切片式= 的操作，在指令前面加入数字前缀表示重复命令次数不错，虽然 emacs 也有 =M-<NUM> + <COMMAND>= 感觉还是别扭了点。刚开始接触 vim 时，它的一行间跳转和行间跳转让我很羡慕，但是自从有了 ace-jump 插件之后，感觉 vim 跳转方式很鸡肋，试问谁会数你要跳转的位置然后得出一个数字，人们更愿意不断的重复按某个键...更有成就感。
@@ -35,6 +34,27 @@
 + emacs 下的 terminal
   可以使用 emacs 的守护进程模式 =emacs -daemon= ，相当于启动了一个 sever，然后用客户端形式启动， =emacsclient -t= 对应 terminal 版本的 emacs， =emacsclient -c= 对应的是图形版（x frame）版本的 emacs。
 + browse-url-browser-function 后面绑定要打开 url 的函数，比如我常绑定到 eww，设置为（setq browse-url-browser-function 'eww-browser-url)
++ dired/proced/ibuffer
+  这几个都是以一个 buffer 的形式列出 files、processs、buffers，之后操作几乎类似，遵循 mark-action 的形式。
+  | 按键  | 功能                                                      |
+  | e     | 用 emacs 编辑打开一个文件                                 |
+  | o     | 在另外一个 buffer 中打开一个文件，并跳到该 buffer         |
+  | C-o   | 在另外一个 buffer 中打开一个文件，但还保留在 dired buffer |
+  | i     | 在 dired buffer 下打开文件夹（非常有用）                  |
+  |       | 以上几乎为 dired 专有                                     |
+  | g     | 用来更新状态                                              |
+  | m     | mark 用来标记 item                                        |
+  | %m    | 标记符合正则表达式的 item，批量标记                       |
+  | %g    | grep 标记内容（file、buffer 的内容）符合正则表达式的 item |
+  | u     | 删除单个标记                                              |
+  | U     | 删除所有的标记                                            |
+  | M-DEL | 删除所有标记的 items                                      |
+  | C     | 拷贝文件，大写字母就是标记之后的操作                      |
+  | R     | 移动或者重命名                                            |
+  | H     | 创建硬链接                                                |
+  | M     | chmod 更改文件执行权限                                    |
+  | D     | 删除标记的 item（非常有用）                                |
+  还有 d 键用来标记要删除的 item，%d 标记符合正则表达式需要删除的 item，后续用 x 进行执行，x 经常作为执行键在 emacs 当中。
 ** spacemacs
 spacemacs 是新兴的比较火的项目，结合 evil-mode 和 emace。
 spacemacs 主要有以下三个特点：
@@ -53,4 +73,5 @@ spacemacs 本身整合了许多的功能，有些在文档中也未必能描述�
 + 在.spacemacs 下有设置 major-mode 的 leader-key，不用每次在编辑状态下需要 Esc->Spc->m 了，相当完成三步操作，之前不知道，在某个 mode 下不断切换状态用得非常辛苦
 + 在补全功能 company 弹出的候选中按 C-/ 键，会使用 helm-company 包进行 fussy match 搜索
 + 在 dotspacemacs-configuration-layers 配置(colors :variables colors-enable-rainbow-identifiers t) 各种文本可以出现多种颜色高亮，在深色主题下很合适。
-+ 现在
++ 现在 spc "ox" 绑定了 ace-url 可以快速跳转到了 http 开头的 url 链接
++ 进入 undo-tree 再按 d 就可以显示 undo 过程的文本差异
