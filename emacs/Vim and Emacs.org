@@ -67,7 +67,7 @@ spacemacs 主要有以下三个特点：
 spacemacs 本身整合了许多的功能，有些在文档中也未必能描述详尽，所以把一些实用但是平常不怎么注意到的功能记录于此
 + 在 evil－normal－state 下的 g 键定义了许多功能，相当 g（oto），比如说 gf 可以快速的跳转当前光标下的路径地址
 + 使用 =×= 和 =#= ，在 vim 中可以直接高亮选择，同样的 spacemacs 使用了 highlight-symbol 这个 packege，在高亮后还可以有后续的操作（搜索，批量编辑等等），非常实用
-+ spc？ 可以用来搜索相关命令的按键绑定
++ spc？ 可以用来搜索相关命令的按键绑定，分别列出 major-mode、minor-mode 的键绑定
 + 如果是在一个 git 项目下，用 version-control 则在添加行或者删减行的时候，在末尾有绿色或者红色提示，可以选择关闭
 + indent-guide 缩进提醒，挺不错的一个 package
 + 在.spacemacs 下有设置 major-mode 的 leader-key，不用每次在编辑状态下需要 Esc->Spc->m 了，相当完成三步操作，之前不知道，在某个 mode 下不断切换状态用得非常辛苦
@@ -75,3 +75,7 @@ spacemacs 本身整合了许多的功能，有些在文档中也未必能描述�
 + 在 dotspacemacs-configuration-layers 配置(colors :variables colors-enable-rainbow-identifiers t) 各种文本可以出现多种颜色高亮，在深色主题下很合适。
 + 现在 spc "ox" 绑定了 ace-url 可以快速跳转到了 http 开头的 url 链接
 + 进入 undo-tree 再按 d 就可以显示 undo 过程的文本差异
++ spacemacs 默认的 buffer 内容的搜索是 helm-swoop，如果在之前加数字前缀，比如 M-6 则默认将 buffer 分成六行为一个区域进行搜索，可有多个关键字
++ 如果用 ag、ack、grep 进行搜索的时候，加上前缀 C-u 则可以圈限范围，根据你搜索的类型的不同可指定特定的 file、buffe
++ spc h l 打开最近搜索的内容 helm-mini 界面
++ * e 进入 iedit 模式，对重构代码有用，具体操作内容可查看键绑定
