@@ -61,6 +61,32 @@
   杀死进程： kill PID(kill -9 PID强行杀死）
             killall program_name
   #+END_EXAMPLE
++ 挂载和卸载挂载点
+  #+BEGIN_SRC sh
+    mount /dev/sda1 /mnt ###将sda1挂载到 /mnt 中
+    cd /mnt ###直接通过 /mnt 访问
+    mount -o remount,rw /mnt ###重新挂载sda1到/mnt，并设置权限
+    umount /mnt ###就是反操作，卸载 /mnt上挂载的文件系统
+    umount -a ###卸载所有已挂载的文件系统
+  #+END_SRC
++ tar 命令
+  tar主要用于创建归档文件，和解压归档文件，其本身没有压缩功能的。
+  太复杂只需记住两个命令就行了
+  | 参数 | 描述     |
+  |------+----------|
+  | -c   | 创建归档 |
+  | -x   | 解压归档 |
+  | -v   | 显示处理过程 |
+  | -f   | 目标文件     |
+  | -j   | 调用bzip2进行解压缩 |
+  | -z   | 调用gzip进行解压缩  |
+  | -t   | 列出归档中的文件    |
+  #+BEGIN_EXAMPLE
+  tar zxvf xxx.tar.gz  ### 解压归档文件，gz结尾的文件
+  tar zcvf xxx.tar.gz xxx/ ###创建归档文件
+  tar zxvf xxx.tar.bz2 ###同理
+  tar zcvf xxx.tar.bz2 xxx/ ###同理，就是X代表解压，c(ompress)代表压缩
+  #+END_EXAMPLE
 + 跳转
   后来才知道原来shell支持emacs式的移动，跳转单词什么的
   尤其 =ctrl+r= 可以用来向上搜索命令历史
